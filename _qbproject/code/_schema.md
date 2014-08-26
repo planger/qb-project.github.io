@@ -1,17 +1,15 @@
 ```scala
 // Define your schema 
-val issueSchema = obj(
+val issueSchema = qbClass(
     "id" -> objectId,
-    "parentIssue" -> optional(objectId),
-    "status" -> enum("pending", "approved", "rejected"),
-    "urgence" -> integer(range(1, 5)),
-    "comment" -> string(maxLength(2000)),
-    "reporter" -> obj(
-        "firstName" -> string(length(1, 100)),
-        "lastName" -> string(length(1, 100)),
-        "email" -> email
+    "parentIssue" -> optional(objectId), // may be missing in JSON instances
+    "status" -> qbEnum("pending", "approved", "rejected"), // enumeration
+    "urgence" -> qbInteger(range(1, 5)),    // range constraint on integer
+    "reporter" -> qbClass(
+        "name" -> qbString(length(1, 100)), 
+        "email" -> qbEmail              // convenience type based on string
     ),
-    "creationDate" -> dateTime
+    "creationDate" -> qbDateTime // convenience type for dates
 )
 ```
                 

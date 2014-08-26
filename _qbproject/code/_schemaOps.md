@@ -1,10 +1,11 @@
 ```scala
 // Combine Schemas
-val urgentIssueSchema = issueSchema + obj(
-    "urgency" -> enum("super important", "meh")
+val urgentIssueSchema = issueSchema + qbClass(
+    "urgency" -> qbEnum("foo", "meh")
 )
 
-// Transform Schemas, e.g. make fields optional
-val noReporterSchema = urgendIssueSchema ? "reporter"
+// make attributes optional
+val noReporterSchema = 
+  urgentIssueSchema ? "reporter"
 
 ```

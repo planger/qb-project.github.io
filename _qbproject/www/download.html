@@ -79,7 +79,32 @@
         </div>
     </div>-->
 
-    <h1>404</h1><h3>Whoops. Looks like what you're looking for can't be found. :(</h3>
+    <div class="title">
+  	<div class="container">
+		Download
+	</div>
+</div>
+<div class="container">
+      <div class="col-md-12">
+        <h1>Releases</h1>
+<p>All our releases are hosted on <a href="https://bintray.com/qb">Bintray</a>. The most recent version of qb is 0.4 Beta 1 for Scala 2.10.</p>
+<h2>0.4 version</h2>
+<p>To use the 0.4 Beta 1 version of qb, enter the following into your <code>build.sbt</code>:</p>
+<pre><code>resolvers += &quot;QB repository&quot; at &quot;http://dl.bintray.com/qb/maven&quot;
+
+libraryDependencies ++= Seq(
+   &quot;org.qbproject&quot;     %% &quot;qbschema&quot; % &quot;0.4.0-b1&quot;,
+   &quot;org.qbproject&quot;     %% &quot;qbplay&quot;   % &quot;0.4.0-b1&quot;,
+   &quot;org.reactivemongo&quot; %% &quot;play2-reactivemongo&quot; % &quot;0.10.2&quot;
+)</code></pre>
+<h1>Build</h1>
+<p>We use <a href="http://travis-ci.org/">Travis CI</a> to build qb:
+<a href="http://travis-ci.org/qb-project/qbproject"><img src="https://travis-ci.org/qb-project/qbproject.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/r/qb-project/qbproject?branch=master"><img src="https://coveralls.io/repos/qb-project/qbproject/badge.png?branch=master" alt="Coverage Status"></a>    </p>
+<h1>Source code</h1>
+<p>The source code of qb is available at <a href="https://github.com/qb-project/qbproject">GitHub</a>.</p>
+
+    </div>
+</div>
     
     <div class="container">
         <hr>
