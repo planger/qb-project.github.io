@@ -167,9 +167,11 @@ classes. Each type can be annotated with additional rules a value has to accord 
   ) 
 } </code></pre>
 <p>There are three things to note in the listing: </p>
-<p>First, the association between a user and a task is modelled simply by using <code>userId</code>.  We aliased the variable name for clarity, although this isn&#39;t of course necessary.</p>
-<p>Secondly, because we are going to store our entities in a MongoDB and each entity stored within Mongo needs an ID, we use the Mongo-specific <code>objectId</code> keyword as the ID type.</p>
-<p>Thirdly, for tasks, we set the <code>dueDate</code> to optional in case there is no due date, i.e. the dueDate field may be omitted.</p>
+<ol>
+<li>First, the association between a user and a task is modelled simply by using <code>userId</code>.  We aliased the variable name for clarity, although this isn&#39;t of course necessary.</li>
+<li>Secondly, because we are going to store our entities in a MongoDB and each entity stored within Mongo needs an ID, we use the Mongo-specific <code>objectId</code> keyword as the ID type.</li>
+<li>Thirdly, for tasks, we set the <code>dueDate</code> to optional in case there is no due date, i.e. the dueDate field may be omitted.</li>
+</ol>
 <p>With our schema set, we can now write the CRUD controllers for both entities. </p>
 <h1>Create controllers </h1>
 <p>A Play application has several entry points, one for each URL, which are called actions. 
@@ -263,7 +265,7 @@ An empty array should return, which basically tells us, that no users are yet av
 <p>Now lets create a user. When looking back at the schema of a user, we realize that a valid user needs to have an 
 ID field of type <code>objectId</code>.  Actually, that type should not be exposed as an API.<br>Ideally, we would like users, who want to create a user, to not have an ID field specified. </p>
 <p>Instead of going the process of creating an extra type that specifies which fields are mandatory and which will be handled by the backend and then mapping them onto each other, we simply take the schema and execute a so called schema op on it. </p>
-<p>In this case we want to remove the <code>id</code> field.  The play module of qb already already provides CRUD controller hooks that let you specify another schema while the request is being validated, which is callled the <code>createSchema</code> since it is used to parse the client&#39;s request and creating instances out of it. Analgously, there is also a <code>updateSchema</code> that is used when updating instances.</p>
+<p>In this case we want to remove the <code>id</code> field.  The play module of qb already provides CRUD controller hooks that let you specify another schema while the request is being validated, which is called the <code>createSchema</code> since it is used to parse the client&#39;s request and creating instances out of it. Analgously, there is also a <code>updateSchema</code> that is used when updating instances.</p>
 <p>There&#39;s also a hook that lets you modify the validated instance, which you could use to  add the <code>id</code> field necessary for Mongo, but the qb Play integration already takes care of that for you. </p>
 <p>Open the file <code>app/controllers/UserController.scala</code> and add this import: </p>
 <pre><code>import org.qbproject.api.schema.QBSchema._ </code></pre>
@@ -273,13 +275,13 @@ ID field of type <code>objectId</code>.  Actually, that type should not be expos
 <p>Switch back to Postman, enter a valid JSON user instance (like the one below) and execute a raw JSON POST request to <code>localhost:9000/users</code>  </p>
 <pre><code>{ 
   &quot;name&quot;: &quot;chloe&quot;, 
-  &quot;mail&quot;: &quot;foo@gmail.com&quot;,  
+  &quot;mail&quot;: &quot;foo@gmail.com&quot;  
 } </code></pre>
 <p>You should get a response which lists a single user, like the one below:</p>
 <pre><code>{
   &quot;id&quot;: &quot;53ce4d518101008101dae3d2&quot;,
   &quot;name&quot;: &quot;chloe&quot;,
-  &quot;mail&quot;: &quot;foo@gmail.com&quot;,
+  &quot;mail&quot;: &quot;foo@gmail.com&quot;
 }</code></pre>
 <p>Note the value of the <code>id</code>, because we will come back to it in a second.
 Now try to remove the <code>name</code>name field or set its value to the empty string. In both cases you should receive an validation error describing the error, like the one below:</p>
@@ -300,7 +302,7 @@ Now try to remove the <code>name</code>name field or set its value to the empty 
 <pre><code>{
   &quot;id&quot;: &lt;YOUR_ID&gt;,
   &quot;name&quot;: &quot;chloe&quot;,
-  &quot;mail&quot;: &quot;chloe@gmail.com&quot;,
+  &quot;mail&quot;: &quot;chloe@gmail.com&quot;
 }</code></pre>
 <p>Since we didn&#39;t override the <code>updateSchema</code> we need to specify the ID in the body too, although this doesn&#39;t make much sense in this example. </p>
 <p>Let&#39;s create a task. Execute a POST request to <code>localhost:9000/tasks</code> with this JSON body:</p>
