@@ -59,13 +59,16 @@ some steps might be redundant, because your IDE possibly handles them for you.
 We will first need to add the qbproject dependencies to your project. Open the ```build.sbt``` file and add the qb repository (via the [resolver](http://www.scala-sbt.org/0.13/docs/Resolvers.html) setting) as well as the actual dependencies by appending the following section into the file. Note that sbt requires each setting to be separated by an empty line.
 
 ``` 
-resolvers += "QB repo" at "http://dl.bintray.com/qb/maven" 
+resolvers += "mandubian maven bintray" at "http://dl.bintray.com/mandubian/maven"
 
-libraryDependencies ++= Seq( 
-  "org.qbproject"     %% "qbschema" % "0.4.0-b1", 
-  "org.qbproject"     %% "qbplay"   % "0.4.0-b1", 
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2" 
-) 
+resolvers += "QB repository" at "http://dl.bintray.com/qbproject/maven"
+
+libraryDependencies ++= Seq(
+  "org.qbproject"     %% "qbschema"    % "0.4.0-rc6",
+  "org.qbproject"     %% "qbplay"      % "0.4.0-rc6",
+  "com.mandubian"     %% "play-json-zipper"    % "1.2",
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23"
+)
 ``` 
  
 Switch back to your terminal and enter the ```reload``` command followed by an ```update``` command. 
@@ -89,9 +92,9 @@ Create a folder ```model``` in your ```app``` directory, a file named ```app/mod
    
     package model 
  
-    import org.qbproject.api.schema._ 
-    import org.qbproject.api.schema.QBSchema._ 
-    import org.qbproject.api.mongo.MongoSchemaExtensions._ 
+    import org.qbproject.schema._ 
+    import org.qbproject.schema.QBSchema._ 
+    import org.qbproject.mongo._ 
  
 We write the schema for both entities into a single object we will call ```TaskSchema```. 
 
@@ -157,8 +160,8 @@ All of this goes into ```app/controller/UserController.scala```.
     package controllers 
  
     import model.TaskSchema 
-    import org.qbproject.api.controllers.QBCrudController 
-    import org.qbproject.api.mongo.{QBCollectionValidation, QBMongoCollection} 
+    import org.qbproject.controllers.QBCrudController 
+    import org.qbproject.mongo.{QBCollectionValidation, QBMongoCollection} 
     import play.modules.reactivemongo.MongoController 
  
     object UserController extends MongoController 
@@ -183,7 +186,7 @@ This trait has a single member, ```qbRoutes``` which, when implemented, can be u
   
 Switch back to your UserController and let it extend the ```QBRoutes``` trait. Don't forget to add the necessary imports.
 
-    import org.qbproject.api.routing.{QBRouter, QBRoute}     
+    import org.qbproject.routing.{QBRouter, QBRoute}     
     ...
     object UserController extends MongoController with QBCrudController with QBRouter { 
     ... 
@@ -198,9 +201,9 @@ For completeness, our ```UserController``` currently looks like this:
     package controllers 
  
     import model.TaskSchema 
-    import org.qbproject.api.controllers.QBCrudController 
-    import org.qbproject.api.mongo.{QBCollectionValidation, QBMongoCollection} 
-    import org.qbproject.api.routing.{QBRouter, QBRoute}     
+    import org.qbproject.controllers.QBCrudController 
+    import org.qbproject.mongo.{QBCollectionValidation, QBMongoCollection} 
+    import org.qbproject.routing.{QBRouter, QBRoute}     
     import play.modules.reactivemongo.MongoController 
  
     object UserController extends MongoController 
@@ -225,9 +228,9 @@ The task controller, which we place in ```app/controller/TaskController.scala```
     package controllers 
  
     import model.TaskSchema 
-    import org.qbproject.api.controllers.QBCrudController 
-    import org.qbproject.api.mongo.{QBCollectionValidation, QBMongoCollection} 
-    import org.qbproject.api.routing.{QBRouter, QBRoute}     
+    import org.qbproject.controllers.QBCrudController 
+    import org.qbproject.mongo.{QBCollectionValidation, QBMongoCollection} 
+    import org.qbproject.routing.{QBRouter, QBRoute}     
     import play.modules.reactivemongo.MongoController 
  
     object TaskController extends MongoController 
@@ -246,7 +249,7 @@ Don't forget to also add a line for ```TaskController``` to the ```routes``` fil
 Testing & modifying our application 
 ======================= 
  
-To test our application you need to have a REST client available such as [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm).  When executing requests with Postman you might need to set the ```Content-Type``` header to ```application/json```.
+To test our application you need to have a REST client available such as [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm).  When executing requests with Postman you might need to set the ```Content-Type``` header to ```application/json``` using the button _Headers_ in the upper-right area.
 
 
 Start up mongo (see the [additional instructions](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/) if you are starting Mongo for the first time) and switch back to your terminal and enter ```~run``` to start the server.  The tilde in front of the ```run``` command instructs Play to recompile your source files on the fly in case you make any changes. If you wish to end running the server enter ```Ctrl + D```.
