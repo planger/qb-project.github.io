@@ -260,7 +260,7 @@ Ideally, we would like users, who want to create a user, to not have an ID field
   
 Instead of going the process of creating an extra type that specifies which fields are mandatory and which will be handled by the backend and then mapping them onto each other, we simply take the schema and execute a so called schema op on it. 
 
-In this case we want to remove the ```id``` field.  The play module of qb already already provides CRUD controller hooks that let you specify another schema while the request is being validated, which is callled the ```createSchema``` since it is used to parse the client's request and creating instances out of it. Analgously, there is also a ```updateSchema``` that is used when updating instances.
+In this case we want to remove the ```id``` field.  The play module of qb already provides CRUD controller hooks that let you specify another schema while the request is being validated, which is called the ```createSchema``` since it is used to parse the client's request and creating instances out of it. Analgously, there is also a ```updateSchema``` that is used when updating instances.
 
 There's also a hook that lets you modify the validated instance, which you could use to  add the ```id``` field necessary for Mongo, but the qb Play integration already takes care of that for you. 
  
@@ -278,7 +278,7 @@ Switch back to Postman, enter a valid JSON user instance (like the one below) an
  
     { 
       "name": "chloe", 
-      "mail": "foo@gmail.com",  
+      "mail": "foo@gmail.com"
     } 
  
 You should get a response which lists a single user, like the one below:
@@ -286,7 +286,7 @@ You should get a response which lists a single user, like the one below:
     {
       "id": "53ce4d518101008101dae3d2",
       "name": "chloe",
-      "mail": "foo@gmail.com",
+      "mail": "foo@gmail.com"
     }
     
 Note the value of the ```id```, because we will come back to it in a second.
@@ -312,7 +312,7 @@ Note that in the response we received after an user has been successfully create
     {
       "id": <YOUR_ID>,
       "name": "chloe",
-      "mail": "chloe@gmail.com",
+      "mail": "chloe@gmail.com"
     }
     
 Since we didn't override the ```updateSchema``` we need to specify the ID in the body too, although this doesn't make much sense in this example. 
